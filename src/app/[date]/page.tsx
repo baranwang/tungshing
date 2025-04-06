@@ -15,3 +15,5 @@ export default function Page({ params }: PageProps) {
   const hourIndex = parsedDate.isSame(dayjs(), 'day') ? dayjs().toLunarHour().getIndexInDay() : 0;
   redirect(generatePath(parsedDate, hourIndex));
 }
+
+export const runtime = 'edge';
