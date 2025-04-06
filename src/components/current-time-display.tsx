@@ -3,7 +3,7 @@
 import { dayjs } from '@/utils/dayjs';
 import { useEffect, useState } from 'react';
 
-export const DualHourDisplay: React.FC = () => {
+export const CurrentTimeDisplay: React.FC = () => {
   const [now, setNow] = useState(dayjs());
 
   useEffect(() => {

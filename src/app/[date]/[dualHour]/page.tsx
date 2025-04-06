@@ -5,26 +5,23 @@ import { LuckText } from '@/components/luck-text';
 import { generatePath, getEarthBranchIndexByItem } from '@/utils';
 import { dayjs } from '@/utils/dayjs';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { use, useContext, useMemo } from 'react';
-import styles from './styles.module.css';
 import { DateContext } from '../context';
-import { notFound, redirect } from 'next/navigation';
+import styles from './styles.module.css';
 
 interface PageProps {
   params: Promise<{
+    date: string;
     dualHour?: string;
   }>;
 }
-
 export default function Page({ params }: PageProps) {
-  const { dateString } = useContext(DateContext);
-  const { dualHour } = use(params);
+  const paramsData = use(params);
+  const { dateString = paramsData.date } = useContext(DateContext);
   const parsedDate = dayjs(dateString);
 
-  if (!parsedDate.isValid()) {
-    notFound();
-  }
-  const currentIndex = getEarthBranchIndexByItem(dualHour);
+  const currentIndex = getEarthBranchIndexByItem(paramsData.dualHour);
   if (!/^\d{8}$/.test(dateString)) {
     redirect(generatePath(parsedDate, currentIndex));
   }
