@@ -38,7 +38,7 @@ export default function Layout({ children, params }: LayoutProps) {
                 className="absolute inset-0 cursor-pointer opacity-0"
                 onClick={(e) => e.currentTarget.showPicker()}
                 onChange={(e) => {
-                  const value = dayjs(e.currentTarget.value).format('YYYY-MM-DD');
+                  const value = dayjs(e.currentTarget.value).format('YYYYMMDD');
                   setDateString(value);
                   window.history.pushState(null, '', `/${value}`);
                 }}
