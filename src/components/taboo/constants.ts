@@ -3,14 +3,14 @@ export const TABOO_TYPE_MAP = {
     text: '宜',
     theme: {
       full: 'bg-brand-5 text-white',
-      simple: 'text-brand-5 border border-brand-5',
+      simple: 'text-brand-5 border-brand-5',
     },
   },
   avoid: {
     text: '忌',
     theme: {
       full: 'bg-black text-white',
-      simple: 'text-black border border-black',
+      simple: 'text-black border-black',
     },
   },
 } as const;

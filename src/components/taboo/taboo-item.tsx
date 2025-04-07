@@ -1,8 +1,11 @@
 import { memo } from 'react';
 
-import { TABOO_TYPE_MAP, TabooTheme, TabooTypeKey } from './constants';
+import { TABOO_TYPE_MAP } from './constants';
 
+import type { TabooTheme, TabooTypeKey } from './constants';
 import type { Taboo as TabooType } from 'tyme4ts';
+
+import classNames from 'classnames';
 
 export interface TabooItemProps {
   type: TabooTypeKey;
@@ -17,7 +20,13 @@ export const TabooItem = memo<TabooItemProps>(({ type, taboos, theme }) => {
   return (
     <div className="flex gap-3">
       <div
-        className={`flex size-9 flex-shrink-0 items-center justify-center rounded-full ${typeConfig.theme[theme]} font-black`}
+        className={classNames(
+          'flex size-9 flex-shrink-0 items-center justify-center rounded-full font-black',
+          typeConfig.theme[theme],
+          {
+            border: theme === 'simple',
+          },
+        )}
         aria-label={typeConfig.text}
       >
         {typeConfig.text}

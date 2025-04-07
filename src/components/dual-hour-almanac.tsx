@@ -1,7 +1,7 @@
 import { memo } from 'react';
 
 import { AttributeDisplay } from './attribute-display';
-import { LuckText } from './luck-text';
+import { LuckDisplay } from './luck-display';
 import { Taboo } from './taboo';
 import { DATE_FORMAT_WITH_TIME } from '@/lib/constants';
 import { parseDateString } from '@/lib/utils';
@@ -32,9 +32,13 @@ export const DualHourAlmanac = memo<DualHourAlmanacProps>(({ dateString }) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="text-2xl font-black">
-        {date.format('LH')} · <LuckText>{lunarHour.getTwelveStar().getEcliptic().getLuck().toString()}</LuckText>
-      </div>
+      <h2 className="flex items-baseline">
+        <span className="text-2xl font-black">{date.format('LH')}</span>
+        <LuckDisplay
+          time={lunarHour}
+          className="ml-2 inline-flex size-6 items-center justify-center rounded-full border border-current text-sm"
+        />
+      </h2>
 
       <div className="flex flex-wrap gap-x-9 gap-y-4">
         <AttributeDisplay attribute="五行" value={sixtyCycle.getSound().toString()} />

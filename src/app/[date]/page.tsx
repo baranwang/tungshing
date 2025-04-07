@@ -1,13 +1,15 @@
 'use client';
 
 import { notFound } from 'next/navigation';
-import { use, useEffect, useMemo, useState } from 'react';
+import { use, useEffect, useMemo, useRef, useState } from 'react';
 
+import { ActiveMark } from '@/components/active-mark';
 import { DailyAlmanac } from '@/components/daily-almanac';
 import { DatePicker } from '@/components/date-picker';
 import { DualHourAlmanac } from '@/components/dual-hour-almanac';
-import { LuckText } from '@/components/luck-text';
-import { DATE_FORMAT_WITH_TIME, DATE_RANGE } from '@/lib/constants';
+import { LuckDisplay } from '@/components/luck-display';
+import { WeeklyDatePicker } from '@/components/weekly-date-picker';
+import { DATE_FORMAT, DATE_FORMAT_WITH_TIME, DATE_RANGE } from '@/lib/constants';
 import { dayjs } from '@/lib/dayjs';
 import { getEarthBranchIndexByItem, getEarthBranchItemByIndex, parseDateString } from '@/lib/utils';
 
@@ -16,13 +18,13 @@ import classNames from 'classnames';
 
 interface Props {
   params: Promise<{
-    date: string;
+    date?: string;
   }>;
 }
 
 export default function Page({ params }: Props) {
   const paramsData = use(params);
-  const [dateString, setDateString] = useState(paramsData.date);
+  const [dateString, setDateString] = useState(paramsData.date || dayjs().format(DATE_FORMAT));
   const parsedDate = useMemo(() => parseDateString(dateString), [dateString]);
 
   if (!parsedDate?.isValid() || !parsedDate.isBetween(...DATE_RANGE)) {
@@ -41,12 +43,14 @@ export default function Page({ params }: Props) {
     self.history.pushState(null, '', `#${getEarthBranchItemByIndex(currentIndex)}`);
   }, [currentIndex]);
 
+  const isInitial = useRef(true);
+
   useEffect(() => {
-    const dateStringOnPath = self.location.pathname.slice(1);
-    if (dateString !== dateStringOnPath) {
+    if (!isInitial.current && paramsData.date !== dateString) {
       self.history.pushState(null, '', `/${dateString}`);
     }
-  }, [dateString]);
+    isInitial.current = false;
+  }, [dateString, paramsData.date]);
 
   const times = useMemo(() => {
     const start = parsedDate.clone().startOf('day');
@@ -55,12 +59,12 @@ export default function Page({ params }: Props) {
 
   return (
     <div className="mx-auto flex max-w-3xl min-w-sm flex-col gap-9 p-9">
-      {/* <WeeklyDatePicker currentDateString={dateString} onChange={(dateString) => setDateString(dateString)} /> */}
+      <WeeklyDatePicker currentDateString={dateString} onChange={setDateString} />
 
       <DailyAlmanac
         dateString={dateString}
         renderSolarText={(date) => (
-          <DatePicker value={dateString} onChange={(value) => setDateString(value)}>
+          <DatePicker value={dateString} onChange={setDateString}>
             <button type="button" className="inline-flex items-center gap-2 border-none bg-transparent">
               {date.format('YYYY 年 M 月 D 日 dddd')}
               <svg width="8" height="12" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -95,19 +99,9 @@ export default function Page({ params }: Props) {
                   >
                     {text}
                     {' · '}
-                    <LuckText>{item.toLunarHour().getTwelveStar().getEcliptic().getLuck().toString()}</LuckText>
+                    <LuckDisplay time={item.toLunarHour()} />
                   </a>
-                  {isCurrent && (
-                    <svg viewBox="0 0 16 16" className="size-3">
-                      <title>句读</title>
-                      <circle
-                        cx="8"
-                        cy="8"
-                        r="6"
-                        className={`stroke-brand-5 fill-none stroke-3 ${styles['animated-circle']}`}
-                      />
-                    </svg>
-                  )}
+                  <ActiveMark active={isCurrent} />
                 </div>
               );
             })}

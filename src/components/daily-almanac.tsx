@@ -2,6 +2,7 @@ import { memo } from 'react';
 
 import { AttributeDisplay } from './attribute-display';
 import { CurrentTimeDisplay } from './current-time-display';
+import { LuckDisplay } from './luck-display';
 import { Taboo } from './taboo';
 import { dayjs } from '@/lib/dayjs';
 import { parseDateString } from '@/lib/utils';
@@ -36,7 +37,13 @@ export const DailyAlmanac = memo<DailyAlmanacProps>(({ dateString, renderSolarTe
     <>
       <div className="flex flex-col gap-1">
         <time className="text-brand-5">{renderSolarText?.(date) ?? date.format('YYYY 年 M 月 D 日 dddd')}</time>
-        <time className="text-brand-5 text-4xl font-black">{date.format('LMLD')}</time>
+        <h1 className="flex items-baseline">
+          <time className="text-brand-5 text-4xl font-black">{date.format('LMLD')}</time>
+          <LuckDisplay
+            time={lunarDate}
+            className="ml-2 inline-flex size-6 items-center justify-center rounded-full border border-current text-sm"
+          />
+        </h1>
         <time className="flex gap-2 text-black">
           <span>{date.format('LY年')}</span>
           <span>{lunarDate.getMonthSixtyCycle().toString()}月</span>

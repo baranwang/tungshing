@@ -1,0 +1,16 @@
+@keyframes draw-circle {
+    0% {
+      stroke-dashoffset: 40;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  .animated-circle {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    animation: draw-circle 0.5s ease-in-out forwards;
+    animation-iteration-count: 1;
+  }
+  

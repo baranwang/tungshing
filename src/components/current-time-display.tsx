@@ -9,8 +9,12 @@ export const CurrentTimeDisplay: React.FC = () => {
 
   useEffect(() => {
     let frameId: number;
-    const updateClock = () => {
-      setNow(dayjs());
+    let lastUpdateTime = 0;
+    const updateClock = (timestamp: number) => {
+      if (timestamp - lastUpdateTime >= 1000 || lastUpdateTime === 0) {
+        setNow(dayjs());
+        lastUpdateTime = timestamp;
+      }
       frameId = requestAnimationFrame(updateClock);
     };
     frameId = requestAnimationFrame(updateClock);

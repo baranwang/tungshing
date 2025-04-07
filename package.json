@@ -20,7 +20,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "swiper": "^11.2.6",
-    "tyme4ts": "^1.2.2"
+    "tyme4ts": "^1.2.2",
+    "use-debounce": "^10.0.4"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250404.0",
