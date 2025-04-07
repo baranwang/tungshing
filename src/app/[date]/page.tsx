@@ -58,7 +58,7 @@ export default function Page({ params }: Props) {
   }, [parsedDate]);
 
   return (
-    <div className="mx-auto flex max-w-3xl min-w-sm flex-col gap-9 p-9">
+    <div className="mx-auto flex max-w-3xl min-w-xl flex-col gap-9 p-9">
       <WeeklyDatePicker currentDateString={dateString} onChange={setDateString} />
 
       <DailyAlmanac
