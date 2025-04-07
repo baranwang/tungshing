@@ -1,7 +1,6 @@
-import { generatePath } from '@/utils';
 import { dayjs } from '@/utils/dayjs';
-import { redirect } from 'next/navigation';
+import DatePage from './[date]/page';
 
 export default function Page() {
-  redirect(generatePath(dayjs(), dayjs().toLunarHour().getIndexInDay()));
+  return <DatePage params={Promise.resolve({ date: dayjs().format('YYYYMMDD') })} />;
 }
