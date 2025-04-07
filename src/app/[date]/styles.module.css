@@ -10,12 +10,12 @@
 .line::before,
 .line::after {
   content: "";
-  width: 8px;
+  width: 32px;
   height: 4px;
   background-color: currentColor;
   position: absolute;
   top: 1px;
-  mask-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDQiPjxwYXRoIGQ9Ik0wIDRjMi0yIDQtNCA4LTRIMHY0WiIvPjwvc3ZnPg==);
+  mask-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiA0Ij48cGF0aCBkPSJNMCA0YzItMiA0LTQgMzItNEgwdjRaIi8+PC9zdmc+);
   mask-size: 100% 100%;
   mask-repeat: no-repeat;
   mask-position: center;

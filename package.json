@@ -12,11 +12,14 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
+    "@next/third-parties": "^15.2.4",
+    "classnames": "^2.5.1",
     "dayjs": "^1.11.13",
     "dayjs-plugin-lunar": "^1.4.0",
     "next": "15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "swiper": "^11.2.6",
     "tyme4ts": "^1.2.2"
   },
   "devDependencies": {
@@ -29,7 +32,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
     "eslint-config-prettier": "^10.1.1",
-    "eslint-plugin-next-on-pages": "^1.13.12",
+    "eslint-plugin-import-x": "^4.10.0",
     "eslint-plugin-prettier": "^5.2.6",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",

@@ -1,6 +1,8 @@
 import { memo } from 'react';
-import type { Taboo as TabooType } from 'tyme4ts';
+
 import { TABOO_TYPE_MAP, TabooTheme, TabooTypeKey } from './constants';
+
+import type { Taboo as TabooType } from 'tyme4ts';
 
 export interface TabooItemProps {
   type: TabooTypeKey;

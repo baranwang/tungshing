@@ -1,8 +1,10 @@
-import { dayjs } from '@/utils/dayjs';
-import { LuckText } from './luck-text';
-import { AttributeDisplay } from './attribute-display';
-import { Taboo } from './taboo';
 import { memo } from 'react';
+
+import { AttributeDisplay } from './attribute-display';
+import { LuckText } from './luck-text';
+import { Taboo } from './taboo';
+import { DATE_FORMAT_WITH_TIME } from '@/lib/constants';
+import { parseDateString } from '@/lib/utils';
 
 export interface DualHourAlmanacProps {
   dateString: string;
@@ -19,7 +21,10 @@ const formatDirection = (direction: string) => {
 };
 
 export const DualHourAlmanac = memo<DualHourAlmanacProps>(({ dateString }) => {
-  const date = dayjs(dateString);
+  const date = parseDateString(dateString, DATE_FORMAT_WITH_TIME);
+  if (!date) {
+    return null;
+  }
   const lunarHour = date.toLunarHour();
   const sixtyCycle = lunarHour.getSixtyCycle();
   const heavenStem = sixtyCycle.getHeavenStem();

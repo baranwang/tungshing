@@ -1,7 +1,9 @@
 'use client';
 
-import { dayjs } from '@/utils/dayjs';
 import { cloneElement, isValidElement, useMemo, useRef } from 'react';
+
+import { DATE_RANGE } from '@/lib/constants';
+import { dayjs } from '@/lib/dayjs';
 
 interface DatePickerProps {
   value?: string;
@@ -34,6 +36,8 @@ export const DatePicker = ({ value, onChange, children }: DatePickerProps) => {
         ref={datePickerRef}
         className="absolute inset-0 -z-1 size-full opacity-0"
         value={dayjs(value).format('YYYY-MM-DD')}
+        min={DATE_RANGE[0].toISOString().split('T')[0]}
+        max={DATE_RANGE[1].toISOString().split('T')[0]}
         onChange={(e) => onChange?.(e.currentTarget.value)}
       />
     </span>

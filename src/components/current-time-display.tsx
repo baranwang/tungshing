@@ -1,7 +1,8 @@
 'use client';
 
-import { dayjs } from '@/utils/dayjs';
 import { useEffect, useState } from 'react';
+
+import { dayjs } from '@/lib/dayjs';
 
 export const CurrentTimeDisplay: React.FC = () => {
   const [now, setNow] = useState(dayjs());

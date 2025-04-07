@@ -1,26 +1,33 @@
 'use client';
 
-import { DailyAlmanac } from '@/components/daily-almanac';
-import { DualHourAlmanac } from '@/components/dual-hour-almanac';
-import { getEarthBranchIndexByItem, getEarthBranchItemByIndex } from '@/utils';
-import { dayjs } from '@/utils/dayjs';
 import { notFound } from 'next/navigation';
 import { use, useEffect, useMemo, useState } from 'react';
+
+import { DailyAlmanac } from '@/components/daily-almanac';
 import { DatePicker } from '@/components/date-picker';
+import { DualHourAlmanac } from '@/components/dual-hour-almanac';
 import { LuckText } from '@/components/luck-text';
+import { DATE_FORMAT_WITH_TIME, DATE_RANGE } from '@/lib/constants';
+import { dayjs } from '@/lib/dayjs';
+import { getEarthBranchIndexByItem, getEarthBranchItemByIndex, parseDateString } from '@/lib/utils';
 
 import styles from './styles.module.css';
+import classNames from 'classnames';
 
-interface PageProps {
+interface Props {
   params: Promise<{
     date: string;
   }>;
 }
 
-export default function Page({ params }: PageProps) {
+export default function Page({ params }: Props) {
   const paramsData = use(params);
   const [dateString, setDateString] = useState(paramsData.date);
-  const parsedDate = useMemo(() => dayjs(dateString), [dateString]);
+  const parsedDate = useMemo(() => parseDateString(dateString), [dateString]);
+
+  if (!parsedDate?.isValid() || !parsedDate.isBetween(...DATE_RANGE)) {
+    notFound();
+  }
 
   const [currentIndex, setCurrentIndex] = useState(() => {
     const hash = 'location' in globalThis ? globalThis.location.hash : '';
@@ -37,13 +44,9 @@ export default function Page({ params }: PageProps) {
   useEffect(() => {
     const dateStringOnPath = self.location.pathname.slice(1);
     if (dateString !== dateStringOnPath) {
-      self.history.pushState(null, '', `/${dateStringOnPath}`);
+      self.history.pushState(null, '', `/${dateString}`);
     }
   }, [dateString]);
-
-  if (!parsedDate.isValid()) {
-    notFound();
-  }
 
   const times = useMemo(() => {
     const start = parsedDate.clone().startOf('day');
@@ -52,6 +55,8 @@ export default function Page({ params }: PageProps) {
 
   return (
     <div className="mx-auto flex max-w-3xl min-w-sm flex-col gap-9 p-9">
+      {/* <WeeklyDatePicker currentDateString={dateString} onChange={(dateString) => setDateString(dateString)} /> */}
+
       <DailyAlmanac
         dateString={dateString}
         renderSolarText={(date) => (
@@ -77,9 +82,11 @@ export default function Page({ params }: PageProps) {
               const index = item.toLunarHour().getIndexInDay();
               const isCurrent = index === currentIndex;
               return (
-                <div key={text} className="flex flex-col items-center gap-1">
+                <div key={text} className="flex flex-col items-center gap-1" suppressHydrationWarning>
                   <a
-                    className={`${isCurrent ? 'font-black' : ''} [writing-mode:vertical-rl] hover:font-black`}
+                    className={classNames('whitespace-nowrap [writing-mode:vertical-rl] hover:font-black', {
+                      'font-black': isCurrent,
+                    })}
                     href={`#${getEarthBranchItemByIndex(index)}`}
                     onClick={(e) => {
                       e.preventDefault();
@@ -106,7 +113,7 @@ export default function Page({ params }: PageProps) {
             })}
           </div>
         </div>
-        <DualHourAlmanac dateString={times[currentIndex]?.toString()} />
+        <DualHourAlmanac dateString={times[currentIndex]?.format(DATE_FORMAT_WITH_TIME)} />
       </div>
     </div>
   );

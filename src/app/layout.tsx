@@ -1,5 +1,8 @@
-import type { Metadata } from 'next';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { Noto_Serif_SC } from 'next/font/google';
+
+import type { Metadata } from 'next';
+
 import './globals.css';
 
 const notoSerifSC = Noto_Serif_SC({
@@ -30,6 +33,13 @@ export const metadata: Metadata = {
     locale: 'zh_Hans',
     type: 'website',
   },
+  formatDetection: {
+    telephone: false,
+    date: false,
+    address: false,
+    email: false,
+    url: false,
+  },
   twitter: {
     card: 'summary',
     title: '万年历 - 传统万年历查询',
@@ -49,6 +59,7 @@ export default function RootLayout({
   return (
     <html lang="zh-Hans" className={notoSerifSC.variable}>
       <body className="text-black">{children}</body>
+      <GoogleAnalytics gaId="G-YNS5W7Q09M" />
     </html>
   );
 }

@@ -1,7 +1,9 @@
 import { memo, useMemo } from 'react';
-import type { LunarDay, LunarHour } from 'tyme4ts';
-import { TabooTheme } from './constants';
+
 import { TabooItem } from './taboo-item';
+
+import type { TabooTheme } from './constants';
+import type { LunarDay, LunarHour } from 'tyme4ts';
 
 export interface TabooProps {
   theme: TabooTheme;
