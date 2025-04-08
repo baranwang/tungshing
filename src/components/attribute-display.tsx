@@ -1,5 +1,7 @@
 import { memo, useMemo } from 'react';
 
+import { Explain } from './explain';
+
 export interface AttributeDisplayProps {
   attribute: React.ReactNode;
   value: React.ReactNode;
@@ -22,7 +24,7 @@ export const AttributeDisplay = memo<AttributeDisplayProps>(({ attribute, value 
   return (
     <div className="flex gap-1">
       <span className="text-brand-5 font-black whitespace-nowrap">{attribute}</span>
-      <span className="text-grey-9">{content}</span>
+      <Explain className="text-grey-9">{content}</Explain>
     </div>
   );
 });

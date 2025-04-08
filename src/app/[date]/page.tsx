@@ -8,7 +8,6 @@ import { ArrowIcon } from '@/components/arrow-icon';
 import { DailyAlmanac } from '@/components/daily-almanac';
 import { DatePicker } from '@/components/date-picker';
 import { DualHourAlmanac } from '@/components/dual-hour-almanac';
-import { withExplain } from '@/components/explain';
 import { LuckDisplay } from '@/components/luck-display';
 import { WeeklyDatePicker } from '@/components/weekly-date-picker';
 import { DATE_FORMAT, DATE_FORMAT_WITH_TIME, DATE_RANGE } from '@/lib/constants';
@@ -24,7 +23,7 @@ interface Props {
   }>;
 }
 
-function Page({ params }: Props) {
+export default function Page({ params }: Props) {
   const paramsData = use(params);
   const [dateString, setDateString] = useState(paramsData.date || dayjs().format(DATE_FORMAT));
   const parsedDate = useMemo(() => parseDateString(dateString), [dateString]);
@@ -60,57 +59,57 @@ function Page({ params }: Props) {
   }, [parsedDate]);
 
   return (
-    <div className="flex flex-col gap-9">
-      <WeeklyDatePicker currentDateString={dateString} onChange={setDateString} />
+    <div className="mx-auto max-w-3xl min-w-sm p-9">
+      <div className="flex flex-col gap-9">
+        <WeeklyDatePicker currentDateString={dateString} onChange={setDateString} />
 
-      <DailyAlmanac
-        dateString={dateString}
-        renderSolarText={(date) => (
-          <DatePicker value={dateString} onChange={setDateString}>
-            <button type="button" className="inline-flex items-center gap-2 border-none bg-transparent">
-              {date.format('YYYY 年 M 月 D 日 dddd')}
-              <ArrowIcon className="text-xs" />
-            </button>
-          </DatePicker>
-        )}
-      />
+        <DailyAlmanac
+          dateString={dateString}
+          renderSolarText={(date) => (
+            <DatePicker value={dateString} onChange={setDateString}>
+              <button type="button" className="inline-flex items-center gap-2 border-none bg-transparent">
+                {date.format('YYYY 年 M 月 D 日 dddd')}
+                <ArrowIcon className="text-xs" />
+              </button>
+            </DatePicker>
+          )}
+        />
 
-      <div>
-        <div className="mb-4">
-          <div className={`${styles.line} mb-4`}>
-            <span />
+        <div>
+          <div className="mb-4">
+            <div className={`${styles.line} mb-4`}>
+              <span />
+            </div>
+            <div className="flex justify-between">
+              {times.map((item) => {
+                const text = item.format('LH');
+                const index = item.toLunarHour().getIndexInDay();
+                const isCurrent = index === currentIndex;
+                return (
+                  <div key={text} className="flex flex-col items-center gap-1" suppressHydrationWarning>
+                    <a
+                      className={classNames('whitespace-nowrap [writing-mode:vertical-rl] hover:font-black', {
+                        'font-black': isCurrent,
+                      })}
+                      href={`#${getEarthBranchItemByIndex(index)}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setCurrentIndex(index);
+                      }}
+                    >
+                      {text}
+                      {' · '}
+                      <LuckDisplay time={item.toLunarHour()} />
+                    </a>
+                    <ActiveMark active={isCurrent} />
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div className="flex justify-between">
-            {times.map((item) => {
-              const text = item.format('LH');
-              const index = item.toLunarHour().getIndexInDay();
-              const isCurrent = index === currentIndex;
-              return (
-                <div key={text} className="flex flex-col items-center gap-1" suppressHydrationWarning>
-                  <a
-                    className={classNames('whitespace-nowrap [writing-mode:vertical-rl] hover:font-black', {
-                      'font-black': isCurrent,
-                    })}
-                    href={`#${getEarthBranchItemByIndex(index)}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setCurrentIndex(index);
-                    }}
-                  >
-                    {text}
-                    {' · '}
-                    <LuckDisplay time={item.toLunarHour()} />
-                  </a>
-                  <ActiveMark active={isCurrent} />
-                </div>
-              );
-            })}
-          </div>
+          <DualHourAlmanac dateString={times[currentIndex]?.format(DATE_FORMAT_WITH_TIME)} />
         </div>
-        <DualHourAlmanac dateString={times[currentIndex]?.format(DATE_FORMAT_WITH_TIME)} />
       </div>
     </div>
   );
 }
-
-export default withExplain(Page);

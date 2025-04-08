@@ -1,149 +1,51 @@
-import { useEffect, useRef } from 'react';
+import { memo } from 'react';
+
+import Tooltip from 'rc-tooltip';
 
 import { EXPLANATION_MAP } from './constants';
 
-import './explain.css';
+import classNames from 'classnames';
 
-/**
- * 高阶组件，为组件添加文本解释功能
- * 会为匹配EXPLANATION_MAP中关键词的文本添加下划线效果
- */
-export const withExplain = <P extends object>(Component: React.ComponentType<P>) => {
-  const ComponentWithExplain = (props: P) => {
-    const wrapRef = useRef<HTMLDivElement>(null);
+export interface ExplainProps {
+  className?: string;
+  component?: React.ElementType;
+  children: React.ReactNode;
+}
 
-    useEffect(() => {
-      if (!wrapRef.current) return;
-
-      // 创建文本节点列表
-      const nodes = [...wrapRef.current.childNodes] as HTMLElement[];
-      const textList: {
-        node: Text;
-        text: string | null;
-        startIndex: number;
-        endIndex: number;
-      }[] = [];
-
-      let currentIndex = 0;
-
-      // 遍历DOM树获取所有文本节点
-      while (nodes.length) {
-        const node = nodes.shift();
-        if (!node) continue;
-
-        if (node.nodeType === Node.TEXT_NODE) {
-          const textNode = node as unknown as Text;
-          if (textNode.wholeText) {
-            const startIndex = currentIndex;
-            const endIndex = currentIndex + textNode.wholeText.length;
-            currentIndex = endIndex;
-            textList.push({
-              node: textNode,
-              text: textNode.textContent,
-              startIndex,
-              endIndex,
-            });
+export const Explain = memo<ExplainProps>(({ component: Component = 'span', children, className }) => {
+  if (!children) {
+    return null;
+  }
+  if (typeof children === 'string') {
+    const explanation = EXPLANATION_MAP[children as keyof typeof EXPLANATION_MAP];
+    if (explanation) {
+      return (
+        <Tooltip
+          classNames={{
+            root: 'max-md:fixed max-md:top-auto! max-md:right-0! max-md:bottom-0! max-md:left-0! absolute max-md:h-fit max-md:before:fixed max-md:before:inset-0 max-md:before:bg-[#00000040] max-md:before:pointer-events-none',
+            body: 'max-w-sm bg-[rgba(255,255,255,0.5)] py-3 shadow-2xl max-md:shadow-[0_-25px_50px_-12px_#00000040] backdrop-blur-xl max-md:w-full max-md:max-w-full md:rounded-2xl',
+          }}
+          placement="bottomLeft"
+          overlay={
+            <div className="pb-[env(safe-area-inset-bottom)]">
+              <div className="px-6 py-2 text-sm font-bold">{children}</div>
+              <div className="max-h-40 overflow-y-auto px-6 pb-3 text-xs/relaxed max-md:h-[36vh]">{explanation}</div>
+            </div>
           }
-        } else {
-          const childNodes = Array.from(node.childNodes) as HTMLElement[];
-          nodes.unshift(...childNodes);
-        }
-      }
+        >
+          <Component
+            className={classNames(
+              'decoration-grey-3 underline decoration-dotted underline-offset-4 hover:opacity-80',
+              className,
+            )}
+          >
+            {children}
+          </Component>
+        </Tooltip>
+      );
+    }
+  }
+  return <Component className={className}>{children}</Component>;
+});
 
-      // 获取所有文本内容
-      const allContentText = textList.map((item) => item.text).join('');
-      const matchList: RegExpExecArray[] = [];
-
-      // 查找所有匹配项
-      Object.keys(EXPLANATION_MAP).forEach((item) => {
-        try {
-          const reg = new RegExp(item, 'gmi');
-          let match = reg.exec(allContentText);
-          while (match) {
-            matchList.push(match);
-            match = reg.exec(allContentText);
-          }
-        } catch (error) {
-          console.error(`正则表达式错误: ${item}`, error);
-        }
-      });
-
-      // 若浏览器支持CSS Highlight API则创建高亮
-      if (typeof window.Highlight === 'function' && CSS.highlights) {
-        try {
-          // 创建高亮实例
-          const colorHighlight = new window.Highlight();
-          CSS.highlights.set('explain-underline', colorHighlight);
-
-          // 为每个匹配添加高亮
-          for (const match of matchList) {
-            const matchStartIndex = match.index;
-            const matchEndIndex = matchStartIndex + match[0].length;
-            let startNode: Node | null = null;
-            let startIndex = 0;
-            let endNode: Node | null = null;
-            let endIndex = 0;
-
-            // 找到匹配文本的起始和结束节点
-            for (const textItem of textList) {
-              if (matchStartIndex > textItem.endIndex) {
-                continue;
-              }
-              if (matchEndIndex <= textItem.startIndex) {
-                break;
-              }
-
-              if (textItem.startIndex <= matchStartIndex && matchStartIndex <= textItem.endIndex) {
-                startNode = textItem.node;
-                startIndex = matchStartIndex - textItem.startIndex;
-              }
-              if (textItem.startIndex <= matchEndIndex && matchEndIndex <= textItem.endIndex) {
-                endNode = textItem.node;
-                endIndex = matchEndIndex - textItem.startIndex;
-              }
-            }
-
-            // 创建范围并添加到高亮
-            if (startNode && endNode) {
-              try {
-                const range = new Range();
-                range.setStart(startNode, startIndex);
-                range.setEnd(endNode, endIndex);
-                colorHighlight.add(range);
-                range.commonAncestorContainer.parentElement?.setAttribute(
-                  'title',
-                  EXPLANATION_MAP[range.commonAncestorContainer.textContent],
-                );
-                // (range.commonAncestorContainer as HTMLElement).setAttribute(
-                //   'title',
-                //   EXPLANATION_MAP[range.commonAncestorContainer.textContent],
-                // );
-              } catch (error) {
-                console.error('创建高亮范围失败:', error);
-              }
-            }
-          }
-        } catch (error) {
-          console.error('高亮设置失败:', error);
-        }
-      }
-
-      // 清理函数
-      return () => {
-        if (CSS.highlights) {
-          CSS.highlights.delete('explain-underline');
-        }
-      };
-    }, []);
-
-    return (
-      <div ref={wrapRef} className="explain-wrapper">
-        <Component {...props} />
-      </div>
-    );
-  };
-
-  ComponentWithExplain.displayName = `withExplain(${Component.displayName || Component.name || 'Component'})`;
-
-  return ComponentWithExplain;
-};
+Explain.displayName = 'Explain';

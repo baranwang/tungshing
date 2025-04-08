@@ -1,6 +1,7 @@
 import { memo } from 'react';
 
 import { TABOO_TEXT_MAP } from './constants';
+import { Explain } from '../explain';
 
 import type { TabooTheme, TabooTypeKey } from './constants';
 import type { Taboo as TabooType } from 'tyme4ts';
@@ -32,7 +33,7 @@ export const TabooItem = memo<TabooItemProps>(({ type, taboos, theme }) => {
       </div>
 
       <div className="flex flex-wrap gap-1 pt-1.5">
-        {hasTaboos ? uniqueTaboos.map((taboo) => <span key={taboo}>{taboo}</span>) : '无'}
+        {hasTaboos ? uniqueTaboos.map((taboo) => <Explain key={taboo}>{taboo}</Explain>) : '无'}
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ const notoSerifSC = Noto_Serif_SC({
 export const metadata: Metadata = {
   title: '万年历',
   description: '万年历 - 查看每日吉凶宜忌、黄道吉日、农历信息',
-  keywords: ['万年历', '黄历', '通胜', '农历', '吉凶', '宜忌', '传统文化', '黄道吉日'],
+  keywords: ['万年历', '黄历', '通书', '通胜', '农历', '吉凶', '宜忌', '传统文化', '黄道吉日'],
   authors: [{ name: 'baranwang', url: 'https://github.com/baranwang' }],
   creator: 'baranwang',
   publisher: 'baranwang',
