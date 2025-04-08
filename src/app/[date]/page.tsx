@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 import { use, useEffect, useMemo, useRef, useState } from 'react';
 
 import { ActiveMark } from '@/components/active-mark';
-import { ArrowIcon } from '@/components/arrow-icon';
 import { DailyAlmanac } from '@/components/daily-almanac';
 import { DatePicker } from '@/components/date-picker';
 import { DualHourAlmanac } from '@/components/dual-hour-almanac';
@@ -69,7 +68,6 @@ export default function Page({ params }: Props) {
             <DatePicker value={dateString} onChange={setDateString}>
               <button type="button" className="inline-flex items-center gap-2 border-none bg-transparent">
                 {date.format('YYYY 年 M 月 D 日 dddd')}
-                <ArrowIcon className="text-xs" />
               </button>
             </DatePicker>
           )}

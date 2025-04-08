@@ -2,6 +2,7 @@ import { memo } from 'react';
 
 import { AttributeDisplay } from './attribute-display';
 import { CurrentTimeDisplay } from './current-time-display';
+import { Explain } from './explain';
 import { LuckDisplay } from './luck-display';
 import { Taboo } from './taboo';
 import { dayjs } from '@/lib/dayjs';
@@ -64,7 +65,13 @@ export const DailyAlmanac = memo<DailyAlmanacProps>(({ dateString, renderSolarTe
         <AttributeDisplay attribute="建除十二神" value={lunarDate.getDuty().toString()} />
         <AttributeDisplay
           attribute="二十八星宿"
-          value={`${twentyEightStar}${twentyEightStar.getSevenStar()}${twentyEightStar.getAnimal()} · ${twentyEightStar.getLuck()}`}
+          value={
+            <>
+              <Explain>{`${twentyEightStar}${twentyEightStar.getSevenStar()}${twentyEightStar.getAnimal()}`}</Explain>
+              {' · '}
+              {twentyEightStar.getLuck().toString()}
+            </>
+          }
         />
         <AttributeDisplay attribute="胎神" value={lunarDate.getFetusDay().toString()} />
         <AttributeDisplay attribute="吉神宜趋" value={gods.auspicious} />

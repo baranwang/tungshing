@@ -13,7 +13,7 @@ export const AttributeDisplay = memo<AttributeDisplayProps>(({ attribute, value 
       return (
         <div className="flex flex-wrap gap-1">
           {value.map((item) => (
-            <span key={item.toString()}>{item.toString()}</span>
+            <Explain key={item.toString()}>{item.toString()}</Explain>
           ))}
         </div>
       );
