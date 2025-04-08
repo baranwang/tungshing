@@ -8,6 +8,7 @@ import { ArrowIcon } from '@/components/arrow-icon';
 import { DailyAlmanac } from '@/components/daily-almanac';
 import { DatePicker } from '@/components/date-picker';
 import { DualHourAlmanac } from '@/components/dual-hour-almanac';
+import { withExplain } from '@/components/explain';
 import { LuckDisplay } from '@/components/luck-display';
 import { WeeklyDatePicker } from '@/components/weekly-date-picker';
 import { DATE_FORMAT, DATE_FORMAT_WITH_TIME, DATE_RANGE } from '@/lib/constants';
@@ -23,7 +24,7 @@ interface Props {
   }>;
 }
 
-export default function Page({ params }: Props) {
+function Page({ params }: Props) {
   const paramsData = use(params);
   const [dateString, setDateString] = useState(paramsData.date || dayjs().format(DATE_FORMAT));
   const parsedDate = useMemo(() => parseDateString(dateString), [dateString]);
@@ -111,3 +112,5 @@ export default function Page({ params }: Props) {
     </div>
   );
 }
+
+export default withExplain(Page);
