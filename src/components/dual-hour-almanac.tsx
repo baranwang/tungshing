@@ -32,7 +32,7 @@ export const DualHourAlmanac = memo<DualHourAlmanacProps>(({ dateString }) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="flex items-baseline">
+      <h2 className="flex items-center">
         <span className="text-2xl font-black">{date.format('LH')}</span>
         <LuckDisplay
           time={lunarHour}

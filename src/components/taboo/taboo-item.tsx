@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import { TABOO_TYPE_MAP } from './constants';
+import { TABOO_TEXT_MAP } from './constants';
 
 import type { TabooTheme, TabooTypeKey } from './constants';
 import type { Taboo as TabooType } from 'tyme4ts';
@@ -14,25 +14,25 @@ export interface TabooItemProps {
 }
 
 export const TabooItem = memo<TabooItemProps>(({ type, taboos, theme }) => {
-  const typeConfig = TABOO_TYPE_MAP[type];
+  const text = TABOO_TEXT_MAP[type];
   const hasTaboos = taboos.length > 0;
+  const uniqueTaboos = [...new Set(taboos.map((taboo) => taboo.toString()))];
 
   return (
     <div className="flex gap-3">
       <div
-        className={classNames(
-          'flex size-9 flex-shrink-0 items-center justify-center rounded-full font-black',
-          typeConfig.theme[theme],
-          {
-            border: theme === 'simple',
-          },
-        )}
-        aria-label={typeConfig.text}
+        className={classNames('octagon flex size-9 flex-shrink-0 items-center justify-center bg-current font-black', {
+          'text-brand-5': type === 'recommend',
+          'text-grey-9': type === 'avoid',
+          'before:octagon before:bg-brand-0 relative before:absolute before:inset-px': theme === 'simple',
+        })}
+        aria-label={text}
       >
-        {typeConfig.text}
+        <span className={classNames('z-1', { 'text-white': theme === 'full' })}>{text}</span>
       </div>
+
       <div className="flex flex-wrap gap-1 pt-1.5">
-        {hasTaboos ? taboos.map((taboo) => <span key={taboo.toString()}>{taboo.toString()}</span>) : '无'}
+        {hasTaboos ? uniqueTaboos.map((taboo) => <span key={taboo}>{taboo}</span>) : '无'}
       </div>
     </div>
   );

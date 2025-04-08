@@ -14,8 +14,8 @@ export const LuckDisplay = memo<LuckDisplayProps>(({ time, className }) => {
   return (
     <span
       className={classNames(className, {
-        'text-brand-5': luck === '吉',
-        'text-black': luck === '凶',
+        'text-brand-5 border-brand-3': luck === '吉',
+        'text-grey-9 border-grey-7': luck === '凶',
       })}
     >
       {luck}

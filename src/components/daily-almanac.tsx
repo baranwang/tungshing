@@ -35,16 +35,16 @@ export const DailyAlmanac = memo<DailyAlmanacProps>(({ dateString, renderSolarTe
 
   return (
     <>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-2">
         <time className="text-brand-5">{renderSolarText?.(date) ?? date.format('YYYY 年 M 月 D 日 dddd')}</time>
-        <h1 className="flex items-baseline">
+        <h1 className="flex items-start">
           <time className="text-brand-5 text-4xl font-black">{date.format('LMLD')}</time>
           <LuckDisplay
             time={lunarDate}
-            className="ml-2 inline-flex size-6 items-center justify-center rounded-full border border-current text-sm"
+            className="ml-2 inline-flex size-6 items-center justify-center rounded-full border text-sm"
           />
         </h1>
-        <time className="flex gap-2 text-black">
+        <time className="text-grey-9 flex gap-2">
           <span>{date.format('LY年')}</span>
           <span>{lunarDate.getMonthSixtyCycle().toString()}月</span>
           <span>{sixtyCycle.toString()}日</span>

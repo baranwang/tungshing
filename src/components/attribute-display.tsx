@@ -22,7 +22,7 @@ export const AttributeDisplay = memo<AttributeDisplayProps>(({ attribute, value 
   return (
     <div className="flex gap-1">
       <span className="text-brand-5 font-black whitespace-nowrap">{attribute}</span>
-      <span className="text-black">{content}</span>
+      <span className="text-grey-9">{content}</span>
     </div>
   );
 });

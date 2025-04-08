@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { use, useEffect, useMemo, useRef, useState } from 'react';
 
 import { ActiveMark } from '@/components/active-mark';
+import { ArrowIcon } from '@/components/arrow-icon';
 import { DailyAlmanac } from '@/components/daily-almanac';
 import { DatePicker } from '@/components/date-picker';
 import { DualHourAlmanac } from '@/components/dual-hour-almanac';
@@ -58,7 +59,7 @@ export default function Page({ params }: Props) {
   }, [parsedDate]);
 
   return (
-    <div className="mx-auto flex max-w-3xl min-w-xl flex-col gap-9 p-9">
+    <div className="flex flex-col gap-9">
       <WeeklyDatePicker currentDateString={dateString} onChange={setDateString} />
 
       <DailyAlmanac
@@ -67,9 +68,7 @@ export default function Page({ params }: Props) {
           <DatePicker value={dateString} onChange={setDateString}>
             <button type="button" className="inline-flex items-center gap-2 border-none bg-transparent">
               {date.format('YYYY 年 M 月 D 日 dddd')}
-              <svg width="8" height="12" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4.696 6H8c0-.165-.036-.342-.293-.47C5.057 4.212 2.809 2.212 1.07.11A.302.302 0 00.837 0H.103a.05.05 0 00-.04.08L4.696 6zM4.696 6H8c0 .165-.036.342-.293.47-2.65 1.318-4.898 3.318-6.637 5.42a.302.302 0 01-.233.11H.103a.05.05 0 01-.04-.08L4.696 6z" />
-              </svg>
+              <ArrowIcon className="text-xs" />
             </button>
           </DatePicker>
         )}

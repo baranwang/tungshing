@@ -58,7 +58,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-Hans" className={notoSerifSC.variable}>
-      <body className="text-black">{children}</body>
+      <body className="text-grey-9">{children}</body>
       <GoogleAnalytics gaId="G-YNS5W7Q09M" />
     </html>
   );

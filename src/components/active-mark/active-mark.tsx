@@ -8,7 +8,7 @@ interface ActiveMarkProps {
 
 export const ActiveMark: React.FC<ActiveMarkProps> = ({ className, active }) => {
   if (!active) {
-    return null;
+    return <div className="size-3" />;
   }
   return (
     <svg viewBox="0 0 16 16" className={classNames('size-3', className)}>

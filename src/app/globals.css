@@ -6,7 +6,6 @@
 
   --color-*: initial;
   --color-white: #fff;
-  --color-black: #2f2c2b;
 
   --color-brand-0: #fdf6f2;
   --color-brand-1: #fbe6da;
@@ -19,7 +18,23 @@
   --color-brand-8: #802e21;
   --color-brand-9: #5c1c15;
 
-  --color-border-1: #d2c9bb;
+  --color-grey-0: #fafafa;
+  --color-grey-1: #eeedec;
+  --color-grey-2: #d5d4d3;
+  --color-grey-3: #bdbbba;
+  --color-grey-4: #a4a3a1;
+  --color-grey-5: #8c8a88;
+  --color-grey-6: #757270;
+  --color-grey-7: #5d5b59;
+  --color-grey-8: #464342;
+  --color-grey-9: #2f2c2b;
+}
+
+@utility octagon {
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  @supports not (clip-path: polygon(0 0, 0 0, 0 0, 0 0)) {
+    border-radius: 50%;
+  }
 }
 
 html,
