@@ -32,7 +32,7 @@ export const Explain = memo<ExplainProps>(({ component: Component = 'span', chil
       return (
         <Tooltip
           classNames={{
-            root: 'max-md:fixed max-md:top-auto! max-md:right-0! max-md:bottom-0! max-md:left-0! absolute max-md:h-fit max-md:before:fixed max-md:before:inset-0 max-md:before:bg-[#00000040] max-md:before:pointer-events-none',
+            root: 'max-md:fixed max-md:top-auto! max-md:right-0! max-md:bottom-0! max-md:left-0! absolute max-md:h-fit max-md:before:fixed max-md:before:inset-0 max-md:before:bg-[#00000040] max-md:before:pointer-events-none overscroll-contain max-md:before:overscroll-contain',
             body: 'max-w-sm bg-[rgba(255,255,255,0.5)] py-3 shadow-2xl max-md:shadow-[0_-25px_50px_-12px_#00000040] backdrop-blur-xl max-md:w-full max-md:max-w-full md:rounded-2xl',
           }}
           placement="bottomLeft"
