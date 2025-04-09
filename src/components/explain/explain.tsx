@@ -3,22 +3,32 @@ import { memo } from 'react';
 import Tooltip from 'rc-tooltip';
 
 import { EXPLANATION_MAP } from './constants';
+import { MarkdownBlock } from '../markdown-block';
+
+import type { ExplainItem, ExplainItemData } from './constants';
 
 import classNames from 'classnames';
 
 export interface ExplainProps {
   className?: string;
   component?: React.ElementType;
+  type?: keyof typeof EXPLANATION_MAP;
   children: React.ReactNode;
 }
 
-export const Explain = memo<ExplainProps>(({ component: Component = 'span', children, className }) => {
+export const Explain = memo<ExplainProps>(({ component: Component = 'span', children, className, type }) => {
   if (!children) {
     return null;
   }
-  if (typeof children === 'string') {
-    const explanation = EXPLANATION_MAP[children as keyof typeof EXPLANATION_MAP];
+  if (type && typeof children === 'string') {
+    const explanation = EXPLANATION_MAP[type]?.[children as keyof (typeof EXPLANATION_MAP)[typeof type]] as ExplainItem;
     if (explanation) {
+      let explanationData: ExplainItemData;
+      if (typeof explanation === 'string') {
+        explanationData = { text: explanation };
+      } else {
+        explanationData = explanation;
+      }
       return (
         <Tooltip
           classNames={{
@@ -29,7 +39,15 @@ export const Explain = memo<ExplainProps>(({ component: Component = 'span', chil
           overlay={
             <div className="pb-[env(safe-area-inset-bottom)]">
               <div className="px-6 py-2 text-sm font-bold">{children}</div>
-              <div className="max-h-40 overflow-y-auto px-6 pb-3 text-xs/relaxed max-md:h-[36vh]">{explanation}</div>
+              <div className="max-h-40 overflow-y-auto px-6 pb-3 text-xs/relaxed max-md:h-[36vh]">
+                <MarkdownBlock content={explanationData.text} />
+                {explanationData.source ? (
+                  <div className="mt-2 flex items-center">
+                    来源：
+                    <MarkdownBlock content={explanationData.source} />
+                  </div>
+                ) : null}
+              </div>
             </div>
           }
         >

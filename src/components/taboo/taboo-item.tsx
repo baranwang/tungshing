@@ -33,7 +33,13 @@ export const TabooItem = memo<TabooItemProps>(({ type, taboos, theme }) => {
       </div>
 
       <div className="flex flex-wrap gap-1 pt-1.5">
-        {hasTaboos ? uniqueTaboos.map((taboo) => <Explain key={taboo}>{taboo}</Explain>) : '无'}
+        {hasTaboos
+          ? uniqueTaboos.map((taboo) => (
+              <Explain key={taboo} type="宜忌">
+                {taboo}
+              </Explain>
+            ))
+          : '无'}
       </div>
     </div>
   );
