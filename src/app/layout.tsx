@@ -1,7 +1,7 @@
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Noto_Serif_SC } from 'next/font/google';
 
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 import './globals.css';
 
@@ -49,6 +49,12 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+};
+
+export const viewport: Viewport = {
+  viewportFit: 'cover',
+  themeColor: '#FDF6F2',
+  colorScheme: 'only light',
 };
 
 export default function RootLayout({

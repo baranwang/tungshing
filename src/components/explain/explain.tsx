@@ -38,8 +38,8 @@ export const Explain = memo<ExplainProps>(({ component: Component = 'span', chil
           placement="bottomLeft"
           overlay={
             <div className="pb-[env(safe-area-inset-bottom)]">
-              <div className="px-6 py-2 text-sm font-bold">{children}</div>
-              <div className="max-h-40 overflow-y-auto px-6 pb-3 text-xs/relaxed max-md:h-[36vh]">
+              <div className="px-6 py-2 text-sm font-bold max-md:text-base">{children}</div>
+              <div className="max-h-40 overflow-y-auto px-6 pb-3 text-xs/relaxed max-md:h-[36vh] max-md:text-sm/relaxed">
                 <MarkdownBlock content={explanationData.text} />
                 {explanationData.source ? (
                   <div className="mt-2 flex items-center">
