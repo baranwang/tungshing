@@ -41,12 +41,12 @@ export const DualHourAlmanac = memo<DualHourAlmanacProps>(({ dateString }) => {
       </h2>
 
       <div className="flex flex-wrap gap-x-9 gap-y-4">
-        <AttributeDisplay attribute="五行" value={sixtyCycle.getSound().toString()} />
+        <AttributeDisplay attribute="纳音" value={sixtyCycle.getSound().toString()} />
         <AttributeDisplay
           attribute="冲煞"
           value={`冲${earthBranch.getOpposite().getZodiac()}煞${earthBranch.getOminous()}`}
         />
-        <AttributeDisplay attribute="值神" value={lunarHour.getTwelveStar().toString()} />
+        <AttributeDisplay attribute="星神" type="黄黑二道" value={lunarHour.getTwelveStar().toString()} />
         <AttributeDisplay attribute="喜神位" value={formatDirection(heavenStem.getJoyDirection().toString())} />
         <AttributeDisplay attribute="财神位" value={formatDirection(heavenStem.getWealthDirection().toString())} />
         <AttributeDisplay attribute="福神位" value={formatDirection(heavenStem.getMascotDirection().toString())} />

@@ -34,10 +34,15 @@ export const DatePicker = ({ value, onChange, children }: DatePickerProps) => {
       <input
         type="date"
         ref={datePickerRef}
-        className="absolute inset-0 -z-1 size-full opacity-0"
+        className="absolute inset-0 z-1 size-full opacity-0"
         value={dayjs(value).format('YYYY-MM-DD')}
         min={DATE_RANGE[0].toISOString().split('T')[0]}
         max={DATE_RANGE[1].toISOString().split('T')[0]}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          datePickerRef.current?.showPicker();
+        }}
         onChange={(e) => onChange?.(e.currentTarget.value)}
       />
     </span>
